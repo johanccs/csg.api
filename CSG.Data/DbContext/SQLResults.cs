@@ -33,10 +33,16 @@ namespace CSG.Data.DbContext
         #region Private Readonly Fields
 
         private readonly DataTable _dt;
+        private readonly int _resultCount;
 
         #endregion
 
         #region Constructor
+
+        public SQLResults(int resultCount)
+        {
+            _resultCount = resultCount;
+        }
 
         public SQLResults(DataTable dt)
         {
@@ -87,6 +93,11 @@ namespace CSG.Data.DbContext
         public DataTable GetResults()
         {
             return _dt;
+        }
+
+        public int GetIntResults()
+        {
+            return _resultCount;
         }
 
         #endregion

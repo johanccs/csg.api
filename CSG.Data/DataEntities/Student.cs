@@ -7,5 +7,8 @@ namespace CSG.Data.DataEntities
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime DateRegistered { get; set; }
+
+        public Student(string id) : base(id)
+        { }
     }
 }

@@ -4,10 +4,12 @@ using CSG.Interfaces.BaseRepo;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace CSG.Repositories.Repos
 {
-    public class StudentRepo : BaseRepo, IBaseRepo<Student>
+    public class StudentRepo : BaseRepo, IBaseRepo<Student,string>
     {
         #region Readonly Fields
 
@@ -26,9 +28,9 @@ namespace CSG.Repositories.Repos
 
         #region Public Methods
 
-        public List<Student> GetAll()
+        public async Task<List<Student>> GetAllAsync()
         {
-            var results = _dbContext.ExecuteQuery();
+            var results = await _dbContext.ExecuteQuery(SP_GETSTUDENTS);
 
             try
             {
@@ -44,7 +46,45 @@ namespace CSG.Repositories.Repos
                 throw;
             }
         }
+     
+        public async Task InsertEntityAsync(Student entity)
+        {
+            try
+            {
+                var paramList = BuildSqlParameters(entity);
+                var results = await _dbContext.ExecuteNonQuery(SP_INSERTSTUDENT, paramList);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
+        public async Task DeleteAllAsync()
+        {
+            try
+            {
+                var results = await _dbContext.ExecuteNonQuery(SP_DELETEALLSTUDENTS);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteByIdAsync(string entityId)
+        {
+            try
+            {
+                var paramList = BuildIdSqlParameterList("@studentId", entityId);
+                var results = await _dbContext.ExecuteNonQuery(SP_DELETESTUDENTBYID, paramList);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+     
         #endregion
 
         #region Private Methods
@@ -57,8 +97,8 @@ namespace CSG.Repositories.Repos
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    var student = new Student();
-                    student.Id = row[STUDENTID].ToString();
+                    var student = new Student(row[STUDENTID].ToString());
+                    
                     student.Name = row[NAME].ToString();
                     student.Surname = row[SURNAME].ToString();
                     student.DateRegistered = Convert.ToDateTime(row[DATEREGISTERED]);
@@ -69,6 +109,19 @@ namespace CSG.Repositories.Repos
             }
 
             return students;
+        }
+
+        private List<SqlParameter> BuildSqlParameters(Student entity)
+        {
+            var paramList = new List<SqlParameter>()
+            {
+                new SqlParameter("@studentId", entity.Id),
+                new SqlParameter("@name", entity.Name),
+                new SqlParameter("@surname", entity.Surname),
+                new SqlParameter("@dateRegistered", entity.DateRegistered)
+            };
+
+            return paramList;
         }
 
         #endregion       

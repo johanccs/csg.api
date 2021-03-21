@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace CSG.Data.Extensions
@@ -34,6 +35,18 @@ namespace CSG.Data.Extensions
             cmd.Parameters.Add(errStateParam);
             cmd.Parameters.Add(errProcedureParam);
             cmd.Parameters.Add(errLineParam);
+        }
+
+        public static void AddRequiredSqlParameters(this SqlCommand sqlCommand, 
+           SqlCommand cmd, List<SqlParameter>parameters)
+        {
+            if (!IsParametersRequired(cmd))
+                return;
+
+            foreach (SqlParameter param in parameters)
+            {
+                cmd.Parameters.AddWithValue(param.ParameterName, param.Value);
+            }
         }
 
         private static bool IsParametersRequired(SqlCommand cmd)
