@@ -13,4 +13,9 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CSG.Data\CSG.Data.csproj" />
+    <ProjectReference Include="..\CSG.Repositories\CSG.Repositories.csproj" />
+  </ItemGroup>
+
 </Project>

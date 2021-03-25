@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CSG.Data\CSG.Data.csproj" />
+    <ProjectReference Include="..\CSG.Interfaces\CSG.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
