@@ -28,9 +28,9 @@ namespace CSG.Repositories.Repos
 
         #region Public Methods
 
-        public async Task<List<Student>> GetAllAsync()
+        public List<Student> GetAllAsync()
         {
-            var results = await _dbContext.ExecuteQuery(SP_GETSTUDENTS);
+            var results = _dbContext.ExecuteQuery(SP_GETSTUDENTS);
 
             try
             {
@@ -47,12 +47,12 @@ namespace CSG.Repositories.Repos
             }
         }
      
-        public async Task InsertEntityAsync(Student entity)
+        public void InsertEntityAsync(Student entity)
         {
             try
             {
                 var paramList = BuildSqlParameters(entity);
-                var results = await _dbContext.ExecuteNonQuery(SP_INSERTSTUDENT, paramList);
+                var results =  _dbContext.ExecuteNonQuery(SP_INSERTSTUDENT, paramList);
             }
             catch (Exception)
             {
@@ -60,11 +60,11 @@ namespace CSG.Repositories.Repos
             }
         }
 
-        public async Task DeleteAllAsync()
+        public void DeleteAllAsync()
         {
             try
             {
-                var results = await _dbContext.ExecuteNonQuery(SP_DELETEALLSTUDENTS);
+                var results =  _dbContext.ExecuteNonQuery(SP_DELETEALLSTUDENTS);
             }
             catch (Exception)
             {
@@ -72,12 +72,12 @@ namespace CSG.Repositories.Repos
             }
         }
 
-        public async Task DeleteByIdAsync(string entityId)
+        public void DeleteByIdAsync(string entityId)
         {
             try
             {
                 var paramList = BuildIdSqlParameterList("@studentId", entityId);
-                var results = await _dbContext.ExecuteNonQuery(SP_DELETESTUDENTBYID, paramList);
+                var results = _dbContext.ExecuteNonQuery(SP_DELETESTUDENTBYID, paramList);
             }
             catch (Exception)
             {

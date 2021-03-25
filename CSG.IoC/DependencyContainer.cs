@@ -11,7 +11,7 @@ namespace CSG.IoC
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddSingleton<SQLConnType>();
+            services.AddTransient<SQLConnType>();
             services.AddSingleton<IBaseRepo<Teacher,string>, TeacherRepo>();
             services.AddSingleton<IBaseRepo<Student,string>, StudentRepo>();
             services.AddSingleton<IBaseRepo<ClassEntity,string>, ClassRepo>();

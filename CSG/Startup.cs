@@ -22,7 +22,7 @@ namespace CSG
         {
             services.AddCors();
             services.RegisterServices();
-            services.AddControllers()
+            services.AddControllers().AddNewtonsoftJson()
                  .AddJsonOptions(options =>
                  {
                      options.JsonSerializerOptions.PropertyNamingPolicy = null;

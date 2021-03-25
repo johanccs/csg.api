@@ -22,18 +22,18 @@ namespace CSG.Test.RepositoryTest
         }
 
         [Fact]
-        public async Task GetAllTeacherRecordsFromDbContextGreaterThanZeroRecords()
+        public void GetAllTeacherRecordsFromDbContextGreaterThanZeroRecords()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new TeacherRepo(dbContext);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }
 
         [Fact]       
-        public async Task InsertTeacherRecord_Succeed()
+        public void InsertTeacherRecord_Succeed()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new TeacherRepo(dbContext);
@@ -43,9 +43,9 @@ namespace CSG.Test.RepositoryTest
             teacher.Surname = "Potgieter";
             teacher.DateRegistered = DateTime.Now.Date;
 
-            await sysUnderTest.InsertEntityAsync(teacher);
+            sysUnderTest.InsertEntityAsync(teacher);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }

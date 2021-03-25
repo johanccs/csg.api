@@ -28,9 +28,9 @@ namespace CSG.Repositories.Repos
 
         #region Public Methods
 
-        public async Task<List<Login>> GetAllAsync()
+        public List<Login> GetAllAsync()
         {
-            var results = await _dbContext.ExecuteQuery(SP_GETLOGINS);
+            var results =  _dbContext.ExecuteQuery(SP_GETLOGINS);
 
             try
             {
@@ -47,13 +47,13 @@ namespace CSG.Repositories.Repos
             }
         }
 
-        public async Task InsertEntityAsync(Login entity)
+        public void InsertEntityAsync(Login entity)
         {
             try
             {
                 var paramList = BuildSqlParameters(entity);
 
-                await _dbContext.ExecuteNonQuery(SP_INSERTLOGIN, paramList);
+                 _dbContext.ExecuteNonQuery(SP_INSERTLOGIN, paramList);
             }
             catch (Exception)
             {

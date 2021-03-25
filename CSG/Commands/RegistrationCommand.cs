@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSG.Api.Commands
 {
@@ -10,10 +11,15 @@ namespace CSG.Api.Commands
             {
                 public string StudentId { get; set; }
                 public string TeacherId { get; set; }
-                public string ClassId { get; set; }
-                public int AttendanceStatusId { get; set; }
-                public decimal Grade { get; set; }
-                public DateTime AttendanceDate { get; set; }
+                public string ClassId { get; set; }             
+                public bool AttendanceStatusId { get; set; }
+                public int Grade { get; set; }
+                public string AttendanceDate { get; set; }
+            }
+
+            public class Requests
+            {
+                public List<Request> Collection { get; set; }
             }
         }
     }

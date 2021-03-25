@@ -29,11 +29,11 @@ namespace CSG.Api.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<IActionResult> GetTeachers()
+        public IActionResult GetTeachers()
         {
             try
             {
-                var result = await _dbContext.GetAllAsync();
+                var result = _dbContext.GetAllAsync();
 
                 if (result == null)
                     return NotFound("No teacher records found");
@@ -48,7 +48,7 @@ namespace CSG.Api.Controllers
 
         [HttpPost]
         [Route("PostNewTeacher")]       
-        public async Task<IActionResult> PostTeacher(TeacherCommand.V1.Request teacherCommand)
+        public IActionResult PostTeacher(TeacherCommand.V1.Request teacherCommand)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace CSG.Api.Controllers
                 }
 
                 var teacher = MapToEntity(teacherCommand);
-                await _dbContext.InsertEntityAsync(teacher);
+                 _dbContext.InsertEntityAsync(teacher);
 
                 return Ok(new { teacher.Id, StatusCode=200 });
             }
@@ -69,11 +69,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAllTeachers()
+        public IActionResult DeleteAllTeachers()
         {
             try
             {
-                await _dbContext.DeleteAllAsync();
+                _dbContext.DeleteAllAsync();
 
                 return Ok("Teachers deleted");
             }
@@ -84,11 +84,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteTeacherById(string id)
+        public IActionResult DeleteTeacherById(string id)
         {
             try
             {
-                await _dbContext.DeleteByIdAsync(id);
+                _dbContext.DeleteByIdAsync(id);
 
                 return Ok(id);
             }

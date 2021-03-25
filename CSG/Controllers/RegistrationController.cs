@@ -3,7 +3,6 @@ using CSG.Data.DataEntities;
 using CSG.Interfaces.BaseRepo;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Threading.Tasks;
 
 namespace CSG.Api.Controllers
 {
@@ -29,11 +28,11 @@ namespace CSG.Api.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<IActionResult> GetRegistrations()
+        public IActionResult GetRegistrations()
         {
             try
             {
-                var result = await _dbContext.GetAllAsync();
+                var result = _dbContext.GetAllAsync();
 
                 if (result == null)
                     return NotFound("No registration records found");
@@ -48,14 +47,17 @@ namespace CSG.Api.Controllers
 
         [HttpPost]
         [Route("PostNewRegistration")]
-        public async Task<IActionResult> PostRegistration(RegistrationCommand.V1.Request request)
+        public IActionResult PostRegistration(RegistrationCommand.V1.Requests request)
         {
             try
             {
-                var registration = MapToEntity(request);
-                await _dbContext.InsertEntityAsync(registration);
+                foreach (var req in request.Collection)
+                {
+                    var registration = MapToEntity(req);
+                    _dbContext.InsertEntityAsync(registration);
+                }
 
-                return Ok(registration.Id);
+                return Ok(0);
             }
             catch (Exception ex)
             {
@@ -64,11 +66,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAllregistrations()
+        public IActionResult DeleteAllregistrations()
         {
             try
             {
-                await _dbContext.DeleteAllAsync();
+                _dbContext.DeleteAllAsync();
 
                 return Ok("Registrations deleted");
             }
@@ -79,11 +81,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteRegistrationById(string id)
+        public IActionResult DeleteRegistrationById(string id)
         {
             try
             {
-                await _dbContext.DeleteByIdAsync(id);
+                _dbContext.DeleteByIdAsync(id);
 
                 return Ok(id);
             }
@@ -105,7 +107,7 @@ namespace CSG.Api.Controllers
                 TeacherId = request.TeacherId,
                 ClassId = request.ClassId,
                 AttendanceDate = Convert.ToDateTime(request.AttendanceDate),
-                AttendanceStatusId = request.AttendanceStatusId,
+                //AttendanceStatusId = request.AttendanceStatusId,
                 Grade = request.Grade
             };
         }

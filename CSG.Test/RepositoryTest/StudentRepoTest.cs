@@ -2,7 +2,6 @@
 using CSG.Data.DbContext;
 using CSG.Repositories.Repos;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace CSG.Test.RepositoryTest
@@ -22,18 +21,18 @@ namespace CSG.Test.RepositoryTest
         }
 
         [Fact]
-        public async Task GetAllStudentRecordsFromDbContextGreaterThanZeroRecords()
+        public void GetAllStudentRecordsFromDbContextGreaterThanZeroRecords()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new StudentRepo(dbContext);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result =  sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }
 
         [Fact]
-        public async Task InsertStudentRecord_Succeed()
+        public void InsertStudentRecord_Succeed()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new StudentRepo(dbContext);
@@ -43,9 +42,9 @@ namespace CSG.Test.RepositoryTest
             student.Surname = "Potgieter";
             student.DateRegistered = DateTime.Now.Date;
 
-            await sysUnderTest.InsertEntityAsync(student);
+             sysUnderTest.InsertEntityAsync(student);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }

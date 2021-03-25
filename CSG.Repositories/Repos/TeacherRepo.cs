@@ -28,11 +28,11 @@ namespace CSG.Repositories.Repos
 
         #region Public Methods
 
-        public async Task<List<Teacher>> GetAllAsync()
+        public List<Teacher> GetAllAsync()
         {
             try
             {
-                var results = await _dbContext.ExecuteQuery(SP_GETTEACHER);
+                var results =  _dbContext.ExecuteQuery(SP_GETTEACHER);
 
                 if (results.IsSuccessfull)
                 {
@@ -47,12 +47,12 @@ namespace CSG.Repositories.Repos
             }
         }
 
-        public async Task InsertEntityAsync(Teacher entity)
+        public void InsertEntityAsync(Teacher entity)
         {
             try
             {
                 var paramList = BuildSqlParameters(entity);
-                var results = await _dbContext.ExecuteNonQuery(SP_INSERTTEACHER, paramList);
+                var results =  _dbContext.ExecuteNonQuery(SP_INSERTTEACHER, paramList);
             }
             catch (Exception)
             {
@@ -60,11 +60,11 @@ namespace CSG.Repositories.Repos
             }
         }
 
-        public async Task DeleteAllAsync()
+        public void DeleteAllAsync()
         {
             try
             {
-                var results = await _dbContext.ExecuteNonQuery(SP_DELETEALLTEACHERS);
+                var results =  _dbContext.ExecuteNonQuery(SP_DELETEALLTEACHERS);
             }
             catch (Exception)
             {
@@ -72,12 +72,12 @@ namespace CSG.Repositories.Repos
             }
         }
 
-        public async Task DeleteByIdAsync(string entityId)
+        public void DeleteByIdAsync(string entityId)
         {
             try
             {
                 var paramList = BuildIdSqlParameterList("@teacherId", entityId);
-                var results = await _dbContext.ExecuteNonQuery(SP_DELETETEACHERBYID, paramList);
+                var results = _dbContext.ExecuteNonQuery(SP_DELETETEACHERBYID, paramList);
             }
             catch (Exception)
             {

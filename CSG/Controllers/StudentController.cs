@@ -29,11 +29,11 @@ namespace CSG.Api.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<IActionResult> GetStudents()
+        public IActionResult GetStudents()
         {
             try
             {
-                var result = await _dbContext.GetAllAsync();
+                var result = _dbContext.GetAllAsync();
 
                 if (result == null)
                     return NotFound("No student records found");
@@ -47,12 +47,12 @@ namespace CSG.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostStudent(StudentCommand.V1.Request request)
+        public IActionResult PostStudent(StudentCommand.V1.Request request)
         {
             try
             {
                 var student = MapToEntity(request);
-                await _dbContext.InsertEntityAsync(student);
+                 _dbContext.InsertEntityAsync(student);
 
                 return Ok(new { student.Id, StatusCode = 200 });
             }
@@ -63,11 +63,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAllStudents()
+        public IActionResult DeleteAllStudents()
         {
             try
             {
-                await _dbContext.DeleteAllAsync();
+                _dbContext.DeleteAllAsync();
 
                 return Ok("Students deleted");
             }
@@ -78,11 +78,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteStudentById(string id)
+        public IActionResult DeleteStudentById(string id)
         {
             try
             {
-                await _dbContext.DeleteByIdAsync(id);
+                _dbContext.DeleteByIdAsync(id);
 
                 return Ok(id);
             }

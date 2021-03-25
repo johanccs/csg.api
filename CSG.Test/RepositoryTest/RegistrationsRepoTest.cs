@@ -21,18 +21,18 @@ namespace CSG.Test.RepositoryTest
         }
 
         [Fact]
-        public async Task GetAllRegistrationRecordsFromDbContextGreaterThanZeroRecords()
+        public void GetAllRegistrationRecordsFromDbContextGreaterThanZeroRecords()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new RegistrationRepo(dbContext);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }
 
         [Fact]
-        public async Task InsertRegistrationRecord_Succeed()
+        public void InsertRegistrationRecord_Succeed()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new RegistrationRepo(dbContext);          
@@ -45,36 +45,36 @@ namespace CSG.Test.RepositoryTest
             reg.StudentId = "50f14850-1161-4b7f-8093-af335090268f";
             reg.TeacherId = "50f14850-1161-4b7f-8093-af335090268f";
             
-            await sysUnderTest.InsertEntityAsync(reg);
+            sysUnderTest.InsertEntityAsync(reg);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }
 
         [Fact]
-        public async Task DeleteClassRecordByID_Succeed()
+        public void DeleteClassRecordByID_Succeed()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new RegistrationRepo(dbContext);
             var regEnt = new Registration("50f14850-1161-4b7f-8093-af335090268f");
 
-            await sysUnderTest.DeleteByIdAsync(regEnt.Id);
+            sysUnderTest.DeleteByIdAsync(regEnt.Id);
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count > 0);
         }
 
         [Fact]
-        public async Task DeleteAllClassRecords_Succeed()
+        public void DeleteAllClassRecords_Succeed()
         {
             var dbContext = new SQLConnType(@"localhost\SqlExpress14", "CSG", "sa", "@1Mops4moa");
             var sysUnderTest = new ClassRepo(dbContext);
 
-            await sysUnderTest.DeleteAllAsync();
+            sysUnderTest.DeleteAllAsync();
 
-            var result = await sysUnderTest.GetAllAsync();
+            var result = sysUnderTest.GetAllAsync();
 
             Assert.True(result.Count == 0);
         }

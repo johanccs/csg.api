@@ -80,7 +80,7 @@ namespace CSG.Data.DbContext
                 Connection.Dispose();
             }
         }
-        public async Task<SQLResults> ExecuteQuery(string sqlCmd)
+        public SQLResults ExecuteQuery(string sqlCmd)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace CSG.Data.DbContext
                     {
                         var dt = new DataTable();
 
-                        if(Connection.State != ConnectionState.Open)
+                        if (Connection.State != ConnectionState.Open)
                             Connection.Open();
 
                         cmd.Connection = Connection;
@@ -102,27 +102,24 @@ namespace CSG.Data.DbContext
 
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
 
-                        await Task.Run(() =>
-                        {
-                            da.Fill(dt);
+                        da.Fill(dt);
 
-                            if (HasSPFailed(cmd))
-                            {
-                                results = new SQLResults(
-                                    cmd.Parameters["@errorMessage"].Value.ToString(),
-                                    cmd.Parameters["@errorNumber"].Value.ToString(),
-                                    cmd.Parameters["@errorSeverity"].Value.ToString(),
-                                    cmd.Parameters["@errorState"].Value.ToString(),
-                                    cmd.Parameters["@errorProcedure"].Value.ToString(),
-                                    cmd.Parameters["@errorLine"].Value.ToString(),
-                                    cmd.CommandText
-                                );
-                            }
-                            else
-                            {
-                                results = new SQLResults(dt);
-                            }
-                        });
+                        if (HasSPFailed(cmd))
+                        {
+                            results = new SQLResults(
+                                cmd.Parameters["@errorMessage"].Value.ToString(),
+                                cmd.Parameters["@errorNumber"].Value.ToString(),
+                                cmd.Parameters["@errorSeverity"].Value.ToString(),
+                                cmd.Parameters["@errorState"].Value.ToString(),
+                                cmd.Parameters["@errorProcedure"].Value.ToString(),
+                                cmd.Parameters["@errorLine"].Value.ToString(),
+                                cmd.CommandText
+                            );
+                        }
+                        else
+                        {
+                            results = new SQLResults(dt);
+                        }
                     }
                 }
 
@@ -134,7 +131,7 @@ namespace CSG.Data.DbContext
             }
         }
 
-        public async Task<SQLResults> ExecuteNonQuery(string sqlCmd)
+        public SQLResults ExecuteNonQuery(string sqlCmd)
         {
             try
             {
@@ -154,27 +151,24 @@ namespace CSG.Data.DbContext
 
                         var resultCount = 0;
 
-                        await Task.Run(() =>
-                        {
-                            resultCount = cmd.ExecuteNonQuery();
+                        resultCount = cmd.ExecuteNonQuery();
 
-                            if (HasSPFailed(cmd) && resultCount > 0)
-                            {
-                                results = new SQLResults(
-                                    cmd.Parameters["@errorMessage"].Value.ToString(),
-                                    cmd.Parameters["@errorNumber"].Value.ToString(),
-                                    cmd.Parameters["@errorSeverity"].Value.ToString(),
-                                    cmd.Parameters["@errorState"].Value.ToString(),
-                                    cmd.Parameters["@errorProcedure"].Value.ToString(),
-                                    cmd.Parameters["@errorLine"].Value.ToString(),
-                                    cmd.CommandText
-                                );
-                            }
-                            else
-                            {
-                                results = new SQLResults(resultCount);
-                            }
-                        });
+                        if (HasSPFailed(cmd) && resultCount > 0)
+                        {
+                            results = new SQLResults(
+                                cmd.Parameters["@errorMessage"].Value.ToString(),
+                                cmd.Parameters["@errorNumber"].Value.ToString(),
+                                cmd.Parameters["@errorSeverity"].Value.ToString(),
+                                cmd.Parameters["@errorState"].Value.ToString(),
+                                cmd.Parameters["@errorProcedure"].Value.ToString(),
+                                cmd.Parameters["@errorLine"].Value.ToString(),
+                                cmd.CommandText
+                            );
+                        }
+                        else
+                        {
+                            results = new SQLResults(resultCount);
+                        }
                     }
                 }
                 return results;
@@ -185,7 +179,7 @@ namespace CSG.Data.DbContext
             }
         }
 
-        public async Task<SQLResults> ExecuteNonQuery(string sqlCmd, List<SqlParameter>paramList)
+        public SQLResults ExecuteNonQuery(string sqlCmd, List<SqlParameter> paramList)
         {
             try
             {
@@ -196,7 +190,7 @@ namespace CSG.Data.DbContext
                     using (var cmd = new SqlCommand())
                     {
                         var dt = new DataTable();
-                        
+
                         Connection.Open();
                         cmd.Connection = Connection;
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -204,27 +198,24 @@ namespace CSG.Data.DbContext
                         cmd.AddSqlParameters(cmd);
                         cmd.AddRequiredSqlParameters(cmd, paramList);
 
-                        await Task.Run(() =>
-                        {
-                            var resultCount = cmd.ExecuteNonQuery();
+                        var resultCount = cmd.ExecuteNonQuery();
 
-                            if (HasSPFailed(cmd) && resultCount > 0)
-                            {
-                                results = new SQLResults(
-                                    cmd.Parameters["@errorMessage"].Value.ToString(),
-                                    cmd.Parameters["@errorNumber"].Value.ToString(),
-                                    cmd.Parameters["@errorSeverity"].Value.ToString(),
-                                    cmd.Parameters["@errorState"].Value.ToString(),
-                                    cmd.Parameters["@errorProcedure"].Value.ToString(),
-                                    cmd.Parameters["@errorLine"].Value.ToString(),
-                                    cmd.CommandText
-                                );
-                            }
-                            else
-                            {
-                                results = new SQLResults(resultCount);
-                            }
-                        });
+                        if (HasSPFailed(cmd) && resultCount > 0)
+                        {
+                            results = new SQLResults(
+                                cmd.Parameters["@errorMessage"].Value.ToString(),
+                                cmd.Parameters["@errorNumber"].Value.ToString(),
+                                cmd.Parameters["@errorSeverity"].Value.ToString(),
+                                cmd.Parameters["@errorState"].Value.ToString(),
+                                cmd.Parameters["@errorProcedure"].Value.ToString(),
+                                cmd.Parameters["@errorLine"].Value.ToString(),
+                                cmd.CommandText
+                            );
+                        }
+                        else
+                        {
+                            results = new SQLResults(resultCount);
+                        }
                     }
                 }
                 return results;

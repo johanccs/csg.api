@@ -29,11 +29,11 @@ namespace CSG.Api.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<IActionResult> GetClasses()
+        public IActionResult GetClasses()
         {
             try
             {
-                var result = await _dbContext.GetAllAsync();
+                var result = _dbContext.GetAllAsync();
 
                 if (result == null)
                     return NotFound("No class records found");
@@ -48,12 +48,12 @@ namespace CSG.Api.Controllers
 
         [HttpPost]
         [Route("PostNewClass")]
-        public async Task<IActionResult> PostClass(ClassCommand.V1.Request request)
+        public IActionResult PostClass(ClassCommand.V1.Request request)
         {
             try
             {
                 var classEntity = MapToEntity(request);
-                await _dbContext.InsertEntityAsync(classEntity);
+                _dbContext.InsertEntityAsync(classEntity);
 
                 return Ok(new { classEntity.Id, StatusCode = 200 });
             }
@@ -64,11 +64,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAllClasses()
+        public IActionResult DeleteAllClasses()
         {
             try
             {
-                await _dbContext.DeleteAllAsync();
+                _dbContext.DeleteAllAsync();
 
                 return Ok("Classes deleted");
             }
@@ -79,11 +79,11 @@ namespace CSG.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteClassById(string id)
+        public IActionResult DeleteClassById(string id)
         {
             try
             {
-                await _dbContext.DeleteByIdAsync(id);
+                 _dbContext.DeleteByIdAsync(id);
 
                 return Ok(id);
             }

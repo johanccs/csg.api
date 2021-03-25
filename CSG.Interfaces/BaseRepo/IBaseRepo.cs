@@ -5,9 +5,9 @@ namespace CSG.Interfaces.BaseRepo
 {
     public interface IBaseRepo<TEntity, TTYPE> where TEntity:class
     {
-        Task<List<TEntity>> GetAllAsync();
-        Task InsertEntityAsync(TEntity entity);
-        Task DeleteByIdAsync(TTYPE entityId);        
-        Task DeleteAllAsync();
+        List<TEntity> GetAllAsync();
+        void InsertEntityAsync(TEntity entity);
+        void DeleteByIdAsync(TTYPE entityId);        
+        void DeleteAllAsync();
     }
 }
